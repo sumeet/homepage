@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html lang="en_US">
+
+<head>
+  <title>sumeet</title>
+</head>
+
+<style type="text/css">
+  @font-face {
+    font-family: "Iosevka Aile Semibold";
+    src: url("fonts/Iosevka Aile Semibold.ttf");
+  }
+  @font-face {
+    font-family: "Iosevka Aile Medium";
+    src: url("fonts/Iosevka Aile Medium.ttf");
+  }
+  h1 {
+    font-family: "Iosevka Aile Semibold";
+  }
+  body {
+    zoom: 150%;
+    letter-spacing: -0.04em;
+    font-family: "Iosevka Aile Medium";
+  }
+</style>
+
+<body markdown>
+# sumeet
+
+### important
+- CV
+  - software engineering experience
+    - selected freelance projects (i worked on more, but... these are some)
+    - companies
+- diary of projects (youtubish thumbnails)
+  <!-- TODO: Strike here next
+
+  Flesh out each "definitely making the list" bullet point. Decide good way to present each item, and think about maybe thumbnail. Goal is to make it easy to understand what the project is, quickly. Not too much ceremony, not too words, explanation. 2 seconds you should be able to figure out what it is
+
+  Should there be like a 1 minute video on each project? How to explain projects quickly. Pictures and GIFs might work too. A little bit of text.
+
+  -->
+
+  - definitely making the list
+    1. whole mouse driven tiling desktop setup in linux, very cool
+    1. webserver in no_std rust
+    1. golden ratio bspwm mod
+    1. deep learning chess
+    1. rust port of nn.h
+      - link to wasm demo with egui
+    1. goylang
+    1. Morphy Chess Club bot
+    1. Zachtronics Solitaire
+    1. VGMix
+    1. twitchdrop
+    1.  CodeMaestro
+    1.  - might to be too buggy to use, so i'll do a video on it
+    1.    - i'll do a mock video, and i'll fix enough bugs to at least make it
+    1.  Zac (langjam 1)
+    1.  matcharoni (langjam 2)
+    1.  Exapunks compiler
+    1. advent of code solutions (esp the interesting ones in diff languages)
+
+  - hmm maybes
+    1. acro party discord game
+    1. adium patch
+    1. casey muratori performance course x86 simulator (interesting)
+    1. clipboard sharing tool
+    1. ada game of life
+    1. noulith LSP
+    1. haskell chip8 emulator
+
+- advertise that i am available for courses and tutoring
+  - 6 week rust workshop in sf
+  - talk about tutoring process, looking for strengths and weaknesses, types of people who might be interested in working with me
+  - i'm all about making it fun
+  - list my experience
+  - credibility (courses and projects)
+  - link to some youtube tutorials
+
+- socials
+  - twitch
+  - discord
+  - github
+
+### would be cool
+- my courses and learning projects
+
+- smoothlife
+
+- some LLM integration
+  - can ask a bot questions about me
+
+- music
+  - mp3 and midi tunes from when i was young
+  - more recent tracker compos
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+  for (const el of document.querySelectorAll('[markdown]'))
+    el.innerHTML = marked.parse(el.innerHTML);
+</script>
+</html>
