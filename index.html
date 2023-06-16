@@ -3,9 +3,16 @@
 
 <head>
   <title>sumeet</title>
+  <link rel="stylesheet" href="fa/css/fontawesome.css">
+  <link rel="stylesheet" href="fa/css/brands.css">
+  <link rel="stylesheet" href="fa/css/solid.css">
 </head>
 
 <style type="text/css">
+  @font-face {
+    font-family: "Iosevka Aile";
+    src: url("fonts/Iosevka Aile.ttf");
+  }
   @font-face {
     font-family: "Iosevka Aile Semibold";
     src: url("fonts/Iosevka Aile Semibold.ttf");
@@ -14,31 +21,58 @@
     font-family: "Iosevka Aile Medium";
     src: url("fonts/Iosevka Aile Medium.ttf");
   }
-  h1 {
-    font-family: "Iosevka Aile Semibold";
+  a, a:visited {
+    color: black;
+    text-decoration: underline;
+    text-decoration-style: dashed;
   }
+  a:hover {
+    color: black;
+    text-decoration-style: wavy;
+  }
+
   body {
-    zoom: 150%;
     letter-spacing: -0.04em;
-    font-family: "Iosevka Aile Medium";
+    font-family: "Iosevka Aile";
+    font-size: 1.2em;
+  }
+  h1, h2, h3 {
+    letter-spacing: -0.07em;
+    font-family: "Iosevka Aile Semibold";
+    margin-bottom: 0.25em;
+  }
+  .fa, .fa-brands {
+    display: inline;
   }
 </style>
 
 <body markdown>
+<!--
+maybe CSS up a logo like this
+
+https://web.archive.org/web/20120301010917/http://www.sumeet.me/
+-->
 # sumeet
+@nop
+[sumcademy@<i class="fa-brands fa-twitch"></i>](https://twitch.tv/sumcademy)
+[smt@<i class="fa-brands fa-discord"></i>](https://discord.com/users/smt)
+[sumeet@<i class="fa-brands fa-github"></i>](https://github.com/sumeet)
+
+## software eng & computer science tutoring
+
+## projects
+
+## professional work experience
 
 ### important
 - CV
   - software engineering experience
+    - selected freelance projects -- between 2018 and 2023, i worked with several businesses as a contractor. these are a few of the contracts i'm allowed to talk about
+      1. property guard
+      1. seedtime -- rescued the project 1 week before their kickstarter launched. had bad bugs and performance issues
+      1. online logo maker
 
-  <!-- TODO: STRIKE HERE NEXT
-  flesh out what i want to put in here
-
-  at least flesh out the freelance part
-  -->
-
-    - selected freelance projects (i worked on more, but... these are some)
-    - companies
+    - full time work will just be regular resume stuff copied from the old resume
 - diary of projects (youtubish thumbnails)
   <!-- TODO:
 
@@ -58,9 +92,9 @@
     1. VGMix
     1. twitchdrop
     1. CodeMaestro might to be too buggy to use, so i'll do a video on it i'll do a mock video, and i'll fix enough bugs to at least make it
-    1.  Zac (langjam 1)
-    1.  matcharoni (langjam 2)
-    1.  Exapunks compiler
+    1. Zac (langjam 1)
+    1. matcharoni (langjam 2)
+    1. Exapunks compiler
     1. advent of code solutions (esp the interesting ones in diff languages)
 
   - making the list but not done
@@ -105,7 +139,27 @@
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
-  for (const el of document.querySelectorAll('[markdown]'))
+let renderer = new marked.Renderer();
+let originalParagraphFn = renderer.paragraph;
+const nopPrefix = '@nop';
+renderer.paragraph = function(text) {
+  if (text.startsWith(nopPrefix)) {
+    return text.slice(nopPrefix.length).trim() + '\n'; // Don't wrap in paragraph tags, remove escape sequence
+  } else {
+    return originalParagraphFn.call(this, text);
+  }
+};
+
+marked.setOptions({renderer: renderer, mangle: false, headerIds: false});
+
+let changed = true;
+while (changed) {
+  changed = false;
+  for (const el of document.querySelectorAll('[markdown]')) {
     el.innerHTML = marked.parse(el.innerHTML);
+    el.removeAttribute('markdown');
+    changed = true;
+  }
+}
 </script>
 </html>
