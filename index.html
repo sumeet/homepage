@@ -41,7 +41,7 @@
     font-family: "Iosevka Aile Semibold";
     margin-bottom: 0.25em;
   }
-  .fa, .fa-brands {
+  .fa, .fa-brands, .fa-solid {
     display: inline;
   }
 </style>
@@ -57,8 +57,41 @@ https://web.archive.org/web/20120301010917/http://www.sumeet.me/
 [<i class="fa-brands fa-twitch"></i>](https://twitch.tv/sumcademy "twitch.tv/sumcademy")
 [<i class="fa-brands fa-discord"></i>](https://discord.com/users/smt "username smt on discord")
 [<i class="fa-brands fa-github"></i>](https://github.com/sumeet "github.com/sumeet")
+[<i class="fa-brands fa-linkedin"></i>](https://www.linkedin.com/in/sumeet-agarwal-01b660a "linkedin")
 
 ## software eng & computer science tutoring
+
+I work with software engineers looking to improve their skills:
+- For the job market
+- Or simply looking to have more fun on the computer
+- process:
+  - 20 minute consultation
+  - free 90 minute session
+
+[book a free 20 minute consultation <i class="fa-solid fa-calendar-alt"></i>](https://calendly.com/smta/20-minutes)
+
+who's the audience here?
+- working software professionals
+- entry level / mid level / senior level
+- looking to improve on
+  - architecture and software design
+  - computer science fundamentals
+  - how web frameworks and tools you're using work under the hood
+  - or just want to get better and not sure how
+- bored of their job and just want to have fun learning new stuff on the computer / want to recapture the magic of having fun on the computer
+
+- interesting things i can teach
+  - a new programming language (Python, Ruby, JavaScript, TypeScript, Go, C, Rust, etc.)
+  - assembly language
+  - functional programming
+  - compilers
+  - software design & architecture
+  - how to learn new programming languages
+  - advent of code
+
+- also post some guides on here for how to improve different skillsets
+
+- also need to talk about the advantages of tutoring, like i'll assess you, and see if i'm able to help you. the advantage of 1on1 is that we're able to make a curriculum really customized to your needs. that being said, i've been doing this for a while and have a bank of exercises to go to: https://github.com/sumeet/Sumcademy
 
 ## projects
 
@@ -117,6 +150,7 @@ https://web.archive.org/web/20120301010917/http://www.sumeet.me/
   - list my experience
   - credibility (courses and projects)
   - link to some youtube tutorials
+  - link to calendly
 
 - socials
   - twitch
@@ -141,7 +175,14 @@ https://web.archive.org/web/20120301010917/http://www.sumeet.me/
 <script>
 let renderer = new marked.Renderer();
 let originalParagraphFn = renderer.paragraph;
+let originalListItemFn = renderer.listitem;
 const nopPrefix = '@nop';
+
+renderer.listitem = function(text) {
+  // marked inserts <p> tags into list items, and it's super annoying. so let's fix that behavior
+  return originalListItemFn(text.replace(/<p>(.*)<\/p>/g, '$1'));
+};
+
 renderer.paragraph = function(text) {
   if (text.startsWith(nopPrefix)) {
     return text.slice(nopPrefix.length).trim() + '\n'; // Don't wrap in paragraph tags, remove escape sequence
