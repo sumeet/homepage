@@ -180,32 +180,11 @@ who's the audience here?
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
-function cleanUrl(sanitize, base, href) {
-  if (sanitize) {
-    var prot;
-    try {
-      prot = decodeURIComponent(unescape(href)).replace(nonWordAndColonTest, '').toLowerCase();
-    } catch (e) {
-      return null;
-    }
-    if (prot.indexOf('javascript:') === 0 || prot.indexOf('vbscript:') === 0 || prot.indexOf('data:') === 0) {
-      return null;
-    }
-  }
-  if (base && !originIndependentUrl.test(href)) {
-    href = resolveUrl(base, href);
-  }
-  try {
-    href = encodeURI(href).replace(/%25/g, '%');
-  } catch (e) {
-    return null;
-  }
-  return href;
-}
-
 let renderer = new marked.Renderer();
 let originalParagraphFn = renderer.paragraph;
 let originalListItemFn = renderer.listitem;
+let originalImageFn = renderer.image;
+
 const nopPrefix = '@nop';
 
 renderer.listitem = function(text) {
@@ -222,26 +201,15 @@ renderer.paragraph = function(text) {
 };
 
 renderer.image = function(href, title, text) {
-  href = cleanUrl(this.options.sanitize, this.options.baseUrl, href);
-  if (href === null) {
-    return text;
-  }
-
+  let html = originalImageFn.call(this, href, title, text);
   let options = {};
   if (text.includes('|')) {
-    [options, text] = text.split('|', 1);
-    options = Object.fromEntries(options.split(",").map(kv => kv.split("=")))
+    [options, _] = text.split('|', 1);
+    for (const [k, v] of options.split(",").map(kv => kv.split("="))) {
+      html = html.replace('<img', `<img ${k}="${v}" `);
+    }
   }
-
-  let out = `<img src="${href}" alt="${text}"`;
-  if (options.width) {
-    out += ` width="${options.width}"`;
-  }
-  if (title) {
-    out += ` title="${title}"`;
-  }
-  out += this.options.xhtml ? '/>' : '>';
-  return out;
+  return html;
 }
 
 marked.setOptions({renderer: renderer, mangle: false, headerIds: false});
