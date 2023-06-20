@@ -256,10 +256,22 @@ while (changed) {
   }
 }
 
+function seppukuIntoDiv(el) {
+  const div = document.createElement('div');
+  img.parentNode.insertBefore(div, el);
+  div.appendChild(el);
+  return div;
+}
+
 // disables autoplay for gifs, makes it so you have to click them
+// TODO:
+// - make some indicator this is a clickable gif -- could probably use fontawesome for this
 var images = document.getElementsByTagName('img');
 for (var i = 0; i < images.length; i++) {
   var img = images[i];
+  const div = seppukuIntoDiv(img);
+  div.style.position = 'relative';
+
   if (img.src.endsWith('.gif')) {
     const specifiedHeight = img.height;
 
@@ -273,24 +285,37 @@ for (var i = 0; i < images.length; i++) {
         this.height = (this.naturalHeight / this.naturalWidth) * this.width;
       }
 
-      const ratio = this.naturalWidth / this.width;
-      canvas.width = this.width * ratio;
-
-      console.log('this.width is', this.width);
-      console.log('this.height is', this.height);
-      canvas.height = this.height * ratio;
+      canvas.width = this.naturalWidth;
+      canvas.height = this.naturalHeight;
+      div.style.width = this.width + 'px';
+      div.style.height = this.height + 'px';
       canvas.style.width = this.width + 'px';  // reset the canvas CSS width/height
       canvas.style.height = this.height + 'px'; // to avoid stretching
-      ctx.scale(ratio, ratio);  // scale the drawing context to match the increased canvas size
-      ctx.drawImage(this, 0, 0, this.width, this.height);
+      ctx.drawImage(this, 0, 0, this.naturalWidth, this.naturalHeight);
     };
+
+    const playButton = document.createElement('i');
+    playButton.className = 'fa-solid fa-play';
+    playButton.style.position = 'absolute';
+    playButton.style.top = '50%';
+    playButton.style.left = '50%';
+    playButton.style.transform = 'translate(-50%, -50%)';
+    playButton.style.fontSize = '2em';
+    playButton.style.color = 'rgba(255, 255, 255, 0.7)';
+    playButton.style.pointerEvents = 'none';
+
     img.onclick = function () {
       img.parentNode.replaceChild(canvas, img);
+      playButton.style.display = 'block';
     };
-    img.parentNode.replaceChild(canvas, img);
+
+    img.onclick();
+
     canvas.onclick = function () {
       canvas.parentNode.replaceChild(img, canvas);
+      playButton.style.display = 'none';
     };
+    canvas.parentNode.appendChild(playButton);
   }
 }
 </script>
