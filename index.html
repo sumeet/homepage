@@ -59,7 +59,14 @@ https://web.archive.org/web/20120301010917/http://www.sumeet.me/
 [<i class="fa-brands fa-github"></i>](https://github.com/sumeet "github.com/sumeet")
 [<i class="fa-brands fa-linkedin"></i>](https://www.linkedin.com/in/sumeet-agarwal-01b660a "linkedin")
 
-## software eng & computer science tutoring
+## resources for learning about programming and computers
+
+### puzzles and games
+#### adults who haven't written a line of code / children under 14
+##### Opus Magnum
+![width=200|Opus Magnum](./opusmagnum.gif)
+
+Hello
 
 I work with software engineers looking to improve their skills:
 - For the job market
@@ -173,6 +180,29 @@ who's the audience here?
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
+function cleanUrl(sanitize, base, href) {
+  if (sanitize) {
+    var prot;
+    try {
+      prot = decodeURIComponent(unescape(href)).replace(nonWordAndColonTest, '').toLowerCase();
+    } catch (e) {
+      return null;
+    }
+    if (prot.indexOf('javascript:') === 0 || prot.indexOf('vbscript:') === 0 || prot.indexOf('data:') === 0) {
+      return null;
+    }
+  }
+  if (base && !originIndependentUrl.test(href)) {
+    href = resolveUrl(base, href);
+  }
+  try {
+    href = encodeURI(href).replace(/%25/g, '%');
+  } catch (e) {
+    return null;
+  }
+  return href;
+}
+
 let renderer = new marked.Renderer();
 let originalParagraphFn = renderer.paragraph;
 let originalListItemFn = renderer.listitem;
@@ -191,6 +221,29 @@ renderer.paragraph = function(text) {
   }
 };
 
+renderer.image = function(href, title, text) {
+  href = cleanUrl(this.options.sanitize, this.options.baseUrl, href);
+  if (href === null) {
+    return text;
+  }
+
+  let options = {};
+  if (text.includes('|')) {
+    [options, text] = text.split('|', 1);
+    options = Object.fromEntries(options.split(",").map(kv => kv.split("=")))
+  }
+
+  let out = `<img src="${href}" alt="${text}"`;
+  if (options.width) {
+    out += ` width="${options.width}"`;
+  }
+  if (title) {
+    out += ` title="${title}"`;
+  }
+  out += this.options.xhtml ? '/>' : '>';
+  return out;
+}
+
 marked.setOptions({renderer: renderer, mangle: false, headerIds: false});
 
 let changed = true;
@@ -200,6 +253,44 @@ while (changed) {
     el.innerHTML = marked.parse(el.innerHTML);
     el.removeAttribute('markdown');
     changed = true;
+  }
+}
+
+// disables autoplay for gifs, makes it so you have to click them
+var images = document.getElementsByTagName('img');
+for (var i = 0; i < images.length; i++) {
+  var img = images[i];
+  if (img.src.endsWith('.gif')) {
+    const specifiedHeight = img.height;
+
+    var canvas = document.createElement('canvas');
+    canvas.style.cursor = 'pointer';
+    var ctx = canvas.getContext('2d');
+    img.style.cursor = 'pointer';
+    img.onload = function () {
+      // TODO: calc for the other way around too, height specified but not width
+      if (specifiedHeight === 0) {
+        this.height = (this.naturalHeight / this.naturalWidth) * this.width;
+      }
+
+      const ratio = this.naturalWidth / this.width;
+      canvas.width = this.width * ratio;
+
+      console.log('this.width is', this.width);
+      console.log('this.height is', this.height);
+      canvas.height = this.height * ratio;
+      canvas.style.width = this.width + 'px';  // reset the canvas CSS width/height
+      canvas.style.height = this.height + 'px'; // to avoid stretching
+      ctx.scale(ratio, ratio);  // scale the drawing context to match the increased canvas size
+      ctx.drawImage(this, 0, 0, this.width, this.height);
+    };
+    img.onclick = function () {
+      img.parentNode.replaceChild(canvas, img);
+    };
+    img.parentNode.replaceChild(canvas, img);
+    canvas.onclick = function () {
+      canvas.parentNode.replaceChild(img, canvas);
+    };
   }
 }
 </script>
