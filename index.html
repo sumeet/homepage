@@ -9,41 +9,90 @@
 </head>
 
 <style type="text/css">
-  @font-face {
-    font-family: "Iosevka Aile";
-    src: url("fonts/Iosevka Aile.ttf");
-  }
-  @font-face {
-    font-family: "Iosevka Aile Semibold";
-    src: url("fonts/Iosevka Aile Semibold.ttf");
-  }
-  @font-face {
-    font-family: "Iosevka Aile Medium";
-    src: url("fonts/Iosevka Aile Medium.ttf");
-  }
-  a, a:visited {
-    color: black;
-    text-decoration: underline;
-    text-decoration-style: dashed;
-  }
-  a:hover {
-    color: black;
-    text-decoration-style: wavy;
-  }
+@font-face {
+  font-family: "Iosevka Aile";
+  src: url("fonts/Iosevka Aile.ttf");
+}
+@font-face {
+  font-family: "Iosevka Aile Semibold";
+  src: url("fonts/Iosevka Aile Semibold.ttf");
+}
+@font-face {
+  font-family: "Iosevka Aile Medium";
+  src: url("fonts/Iosevka Aile Medium.ttf");
+}
+a, a:visited {
+  color: black;
+  text-decoration: underline;
+  text-decoration-style: dashed;
+}
+a:hover {
+  color: black;
+  text-decoration-style: wavy;
+}
 
-  body {
-    letter-spacing: -0.04em;
-    font-family: "Iosevka Aile";
-    font-size: 1.2em;
-  }
-  h1, h2, h3 {
-    letter-spacing: -0.07em;
-    font-family: "Iosevka Aile Semibold";
-    margin-bottom: 0.25em;
-  }
-  .fa, .fa-brands, .fa-solid {
-    display: inline;
-  }
+body {
+  letter-spacing: -0.04em;
+  font-family: "Iosevka Aile";
+  font-size: 1.2em;
+}
+h1, h2, h3 {
+  letter-spacing: -0.07em;
+  font-family: "Iosevka Aile Semibold";
+  margin-bottom: 0.25em;
+}
+.fa, .fa-brands, .fa-solid {
+  display: inline;
+}
+
+.meter {
+  display: flex;
+  align-items: center;
+  font-size: 0.8em; /* Smaller font size for all cells */
+}
+
+.meter-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  height: 20px;
+  width: auto;
+  border: 1px solid #333;
+  background: linear-gradient(to right, #EEE, #DDD, #666); /* Darker color for "Staff" end */
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.meter-segment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  padding: 0 0.2em;
+  text-shadow: 1px 1px 2px white;
+  position: relative;
+}
+
+.meter-segment::after {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 0.5px;
+  background: rgba(0, 0, 0, 0.25);
+  right: 0;
+}
+
+.meter-segment:first-child {
+  background: #F5F5F5;
+}
+
+.meter-segment:last-child {
+  text-shadow: none;
+}
+
+.meter-segment:last-child::after {
+  display: none;
+}
+
 </style>
 
 <body markdown>
@@ -58,6 +107,47 @@ https://web.archive.org/web/20120301010917/http://www.sumeet.me/
 [<i class="fa-brands fa-discord"></i>](https://discord.com/users/smt "username smt on discord")
 [<i class="fa-brands fa-github"></i>](https://github.com/sumeet "github.com/sumeet")
 [<i class="fa-brands fa-linkedin"></i>](https://www.linkedin.com/in/sumeet-agarwal-01b660a "linkedin")
+
+
+welcome to my homepage. i'm a computer enthusiast, and have been on the internet and programming since the 90s.
+
+here's some info about myself, like my work, projects, and services that i offer
+
+## computer courses
+
+<div class="meter">
+  <div class="meter-bar">
+    <div class="meter-segment" id="beginner">Beginner</div>
+    <div class="meter-segment" id="junior">Junior</div>
+    <div class="meter-segment" id="mid-level">Mid</div>
+    <div class="meter-segment" id="senior">Senior</div>
+    <div class="meter-segment" id="staff">Staff</div>
+  </div>
+</div>
+
+### web framework from scratch (junior to staff level)
+### software design &amp; architecture (mid to staff level)
+refactoring exercises and stuff
+video serieses
+web development
+### raw coding chops: feel like you can code anything
+### interview prep (beginner to senior level)
+### low-level computing: x86_64 assembly and c (beginner to staff level)
+### high-level computing: functional programming with haskell (beginner to staff level)
+### learn rust (mid to staff level)
+### computers for kids (beginner to junior level)
+sort of depends on the kid, generally ages 10+ unless they're like super duper already interested in computers
+
+
+## maybes
+
+### neural network from scratch (junior to staff level)
+
+
+## learning resources
+## teaching experience
+## software engineering experience
+
 
 ## resources for learning about programming and computers
 
