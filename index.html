@@ -53,12 +53,10 @@ h1, h2, h3 {
 
 .meter-bar {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   height: 20px;
   width: auto;
   border: 1px solid #333;
   background: linear-gradient(to right, #EEE, #DDD, #666); /* Darker color for "Staff" end */
-  border-radius: 10px;
   overflow: hidden;
 }
 
@@ -81,16 +79,12 @@ h1, h2, h3 {
   right: 0;
 }
 
-.meter-segment:first-child {
+.meter-segment.beginner {
   background: #F5F5F5;
 }
 
-.meter-segment:last-child {
+.meter-segment.staff {
   text-shadow: none;
-}
-
-.meter-segment:last-child::after {
-  display: none;
 }
 
 </style>
@@ -115,15 +109,49 @@ here's some info about myself, like my work, projects, and services that i offer
 
 ## computer courses
 
-<div class="meter">
-  <div class="meter-bar">
-    <div class="meter-segment" id="beginner">Beginner</div>
-    <div class="meter-segment" id="junior">Junior</div>
-    <div class="meter-segment" id="mid-level">Mid</div>
-    <div class="meter-segment" id="senior">Senior</div>
-    <div class="meter-segment" id="staff">Staff</div>
-  </div>
-</div>
+<script>
+function renderMeterBar(startLevel = "Beginner", endLevel = "Staff") {
+  // List of all levels
+  const levels = ['Beginner', 'Junior', 'Mid', 'Senior', 'Staff'];
+
+  // Get indices of the start and end levels
+  const startIdx = levels.indexOf(startLevel);
+  const endIdx = levels.indexOf(endLevel);
+
+  let range = endIdx - startIdx + 1;
+
+  // Generate the bar HTML
+  const borderRadiuses = [0, 0, 0, 0];
+  const isLeftBorderRounded = startIdx === 0;
+  const isRightBorderRounded = endIdx === levels.length - 1;
+  if (isLeftBorderRounded) {
+    borderRadiuses[0] = borderRadiuses[3] = '10px';
+  }
+  if (isRightBorderRounded) {
+    borderRadiuses[1] = borderRadiuses[2] = '10px';
+  }
+  const borderRadiusStyle = "border-radius: " + borderRadiuses.join(" ") + ";";
+  const gridStyle = `grid-template-columns: ${"1fr ".repeat(range)};`
+  let meterBarStyle = borderRadiusStyle + gridStyle;
+  if (!isLeftBorderRounded)
+    meterBarStyle += `border-left: none;`;
+    if (!isRightBorderRounded)
+    meterBarStyle += `border-right: none;`;
+
+  let barHTML = `<div class="meter"><div class="meter-bar" style="${meterBarStyle}">`;
+  for(let i=0; i<levels.length; i++) {
+    if(i >= startIdx && i <= endIdx) {
+      const levelClass = levels[i].toLowerCase();
+      barHTML += `<div class="meter-segment ${levelClass}">${levels[i]}</div>`;
+    }
+  }
+  barHTML += '</div></div>';
+
+  return barHTML;
+}
+</script>
+
+{{ renderMeterBar("Beginner", "Senior") }}
 
 ### web framework from scratch (junior to staff level)
 ### software design &amp; architecture (mid to staff level)
@@ -270,10 +298,10 @@ who's the audience here?
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
-let renderer = new marked.Renderer();
-let originalParagraphFn = renderer.paragraph;
-let originalListItemFn = renderer.listitem;
-let originalImageFn = renderer.image;
+const renderer = new marked.Renderer();
+const originalParagraphFn = renderer.paragraph;
+const originalListItemFn = renderer.listitem;
+const originalImageFn = renderer.image;
 
 const nopPrefix = '@nop';
 
@@ -304,11 +332,19 @@ renderer.image = function(href, title, text) {
 
 marked.setOptions({renderer: renderer, mangle: false, headerIds: false});
 
+function evalInlineCode(text) {
+  return text.replace(/[{][{]\s*(.+)\s*[}][}]/g, (_, p1) => {
+    console.log(p1);
+    return eval(p1);
+  });
+}
+
+
 let changed = true;
 while (changed) {
   changed = false;
   for (const el of document.querySelectorAll('[markdown]')) {
-    el.innerHTML = marked.parse(el.innerHTML);
+    el.innerHTML = marked.parse(evalInlineCode(el.innerHTML));
     el.removeAttribute('markdown');
     changed = true;
   }
