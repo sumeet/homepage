@@ -79,6 +79,12 @@ h1, h2, h3 {
   right: 0;
 }
 
+.meter-segment.cut-off::after {
+  width: 0;
+  height: 0;
+  background: none;
+}
+
 .meter-segment.beginner {
   background: #F5F5F5;
 }
@@ -89,6 +95,12 @@ h1, h2, h3 {
 
 </style>
 
+<script>
+function faBrands(name) {
+  return `<i class="fa-brands fa-${name}"></i>`;
+}
+</script>
+
 <body markdown>
 <!--
 maybe CSS up a logo like this
@@ -97,10 +109,10 @@ https://web.archive.org/web/20120301010917/http://www.sumeet.me/
 -->
 # sumeet
 @nop
-[<i class="fa-brands fa-twitch"></i>](https://twitch.tv/sumcademy "twitch.tv/sumcademy")
-[<i class="fa-brands fa-discord"></i>](https://discord.com/users/smt "username smt on discord")
-[<i class="fa-brands fa-github"></i>](https://github.com/sumeet "github.com/sumeet")
-[<i class="fa-brands fa-linkedin"></i>](https://www.linkedin.com/in/sumeet-agarwal-01b660a "linkedin")
+[{{ faBrands("twitch") }}](https://twitch.tv/sumcademy "twitch.tv/sumcademy")
+[{{ faBrands("discord") }}](https://discord.com/users/smt "username smt on discord")
+[{{ faBrands("github") }}](https://github.com/sumeet "github.com/sumeet")
+[{{ faBrands("linkedin") }}](https://www.linkedin.com/in/sumeet-agarwal-01b660a "linkedin")
 
 
 welcome to my homepage. i'm a computer enthusiast, and have been on the internet and programming since the 90s.
@@ -122,28 +134,29 @@ function renderMeterBar(startLevel = "Beginner", endLevel = "Staff") {
 
   // Generate the bar HTML
   const borderRadiuses = [0, 0, 0, 0];
-  const isLeftBorderRounded = startIdx === 0;
-  const isRightBorderRounded = endIdx === levels.length - 1;
-  if (isLeftBorderRounded) {
+  const showLeftBorder = startIdx === 0;
+  const showRightBorder = endIdx === levels.length - 1;
+  if (showLeftBorder) {
     borderRadiuses[0] = borderRadiuses[3] = '10px';
   }
-  if (isRightBorderRounded) {
+  if (showRightBorder) {
     borderRadiuses[1] = borderRadiuses[2] = '10px';
   }
   const borderRadiusStyle = "border-radius: " + borderRadiuses.join(" ") + ";";
   const gridStyle = `grid-template-columns: ${"1fr ".repeat(range)};`
   let meterBarStyle = borderRadiusStyle + gridStyle;
-  if (!isLeftBorderRounded)
+  if (!showLeftBorder)
     meterBarStyle += `border-left: none;`;
-    if (!isRightBorderRounded)
+  if (!showRightBorder)
     meterBarStyle += `border-right: none;`;
 
   let barHTML = `<div class="meter"><div class="meter-bar" style="${meterBarStyle}">`;
   for(let i=0; i<levels.length; i++) {
-    if(i >= startIdx && i <= endIdx) {
-      const levelClass = levels[i].toLowerCase();
-      barHTML += `<div class="meter-segment ${levelClass}">${levels[i]}</div>`;
-    }
+    if(i < startIdx || i > endIdx) continue;
+    let levelClass = levels[i].toLowerCase();
+    if (i === endIdx && !showRightBorder)
+      levelClass += " cut-off";
+    barHTML += `<div class="meter-segment ${levelClass}">${levels[i]}</div>`;
   }
   barHTML += '</div></div>';
 
@@ -151,9 +164,9 @@ function renderMeterBar(startLevel = "Beginner", endLevel = "Staff") {
 }
 </script>
 
-{{ renderMeterBar("Beginner", "Senior") }}
+### web framework from scratch
+{{ renderMeterBar("Junior", "Staff") }}
 
-### web framework from scratch (junior to staff level)
 ### software design &amp; architecture (mid to staff level)
 refactoring exercises and stuff
 video serieses
@@ -333,10 +346,7 @@ renderer.image = function(href, title, text) {
 marked.setOptions({renderer: renderer, mangle: false, headerIds: false});
 
 function evalInlineCode(text) {
-  return text.replace(/[{][{]\s*(.+)\s*[}][}]/g, (_, p1) => {
-    console.log(p1);
-    return eval(p1);
-  });
+  return text.replace(/[{][{]\s*(.+)\s*[}][}]/g, (_, p1) => eval(p1));
 }
 
 
