@@ -40,6 +40,9 @@ h1, h2, h3 {
   letter-spacing: -0.07em;
   font-family: "Iosevka Aile Semibold";
   margin-bottom: 0.25em;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 .fa, .fa-brands, .fa-solid {
   display: inline;
@@ -47,8 +50,15 @@ h1, h2, h3 {
 
 .meter {
   display: flex;
+  justify-content: flex-start;
   align-items: center;
-  font-size: 0.8em; /* Smaller font size for all cells */
+  font-family: "Iosevka Aile";
+  font-weight: normal;
+  font-size: 0.75em; /* Smaller font size for all cells */
+}
+
+h3 > .meter {
+  margin-left: 1em;
 }
 
 .meter-bar {
@@ -164,14 +174,19 @@ function renderMeterBar(startLevel = "Beginner", endLevel = "Staff") {
 }
 </script>
 
-### web framework from scratch
-{{ renderMeterBar("Junior", "Staff") }}
+#### the experience scale
 
-### software design &amp; architecture (mid to staff level)
+{{ renderMeterBar("Beginner", "Staff") }}
+
+recommended experience levels for each curriculum. keep in mind, these aren't fixed, and it's better to learn something you're interested in
+
+### web framework from scratch {{ renderMeterBar("Junior", "Staff") }}
+
+### software design &amp; architecture {{ renderMeterBar("Mid", "Staff") }}
 refactoring exercises and stuff
 video serieses
 web development
-### raw coding chops: feel like you can code anything
+### coding chops: the skills to code anything
 ### interview prep (beginner to senior level)
 ### low-level computing: x86_64 assembly and c (beginner to staff level)
 ### high-level computing: functional programming with haskell (beginner to staff level)
