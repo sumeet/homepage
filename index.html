@@ -34,8 +34,9 @@ a:hover {
 body {
   letter-spacing: -0.04em;
   font-family: "Iosevka Aile";
-  font-size: 1.2em;
+  font-size: 1.075em;
 }
+
 h1, h2, h3 {
   letter-spacing: -0.07em;
   font-family: "Iosevka Aile Semibold";
@@ -43,9 +44,24 @@ h1, h2, h3 {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  flex-wrap: wrap;
+  row-gap: 0.5em;
+  column-gap: 0.5em;
 }
+
+h2 {
+  text-decoration: underline;
+  cursor: pointer;
+  text-decoration-style: wavy;
+}
+
+h2:active {
+  text-decoration-style: dotted;
+}
+
 .fa, .fa-brands, .fa-solid {
   display: inline;
+  font-size: 1.25em;
 }
 
 .meter {
@@ -53,20 +69,19 @@ h1, h2, h3 {
   justify-content: flex-start;
   align-items: center;
   font-family: "Iosevka Aile";
-  font-weight: normal;
-  font-size: 0.75em; /* Smaller font size for all cells */
+  font-size: 14px; /* Smaller font size for all cells */
 }
 
-h3 > .meter {
-  margin-left: 1em;
-}
+/*h3 > .meter {*/
+/*  margin-left: 1em;*/
+/*}*/
 
 .meter-bar {
   display: grid;
   height: 20px;
   width: auto;
   border: 1px solid #333;
-  background: linear-gradient(to right, #EEE, #DDD, #666); /* Darker color for "Staff" end */
+  /*background: linear-gradient(to right, #EEE, #DDD, #666); !* Darker color for "Staff" end *!*/
   overflow: hidden;
 }
 
@@ -76,7 +91,7 @@ h3 > .meter {
   justify-content: center;
   color: black;
   padding: 0 0.2em;
-  text-shadow: 1px 1px 2px white;
+  /*text-shadow: 1px 1px 2px white;*/
   position: relative;
 }
 
@@ -99,7 +114,20 @@ h3 > .meter {
   background: #F5F5F5;
 }
 
+.meter-segment.junior {
+  background: #D5D5D5;
+}
+
+.meter-segment.mid {
+  background: #B5B5B5;
+}
+
+.meter-segment.senior {
+  background: #959595;
+}
+
 .meter-segment.staff {
+  background: #858585;
   text-shadow: none;
 }
 
@@ -123,13 +151,6 @@ https://web.archive.org/web/20120301010917/http://www.sumeet.me/
 [{{ faBrands("discord") }}](https://discord.com/users/smt "username smt on discord")
 [{{ faBrands("github") }}](https://github.com/sumeet "github.com/sumeet")
 [{{ faBrands("linkedin") }}](https://www.linkedin.com/in/sumeet-agarwal-01b660a "linkedin")
-
-
-welcome to my homepage. i'm a computer enthusiast, and have been on the internet and programming since the 90s.
-
-here's some info about myself, like my work, projects, and services that i offer
-
-## computer courses
 
 <script>
 function renderMeterBar(startLevel = "Beginner", endLevel = "Staff") {
@@ -174,11 +195,13 @@ function renderMeterBar(startLevel = "Beginner", endLevel = "Staff") {
 }
 </script>
 
-#### the experience scale
+## get coding help from me
 
-{{ renderMeterBar("Beginner", "Staff") }}
+computer lessons, tutoring, pair programming buddy, call it whatever you want, bottom line is it's way faster to learn pair programming with someone who's good at explaining things.
 
-recommended experience levels for each curriculum. keep in mind, these aren't fixed, and it's better to learn something you're interested in
+if you're trying to learn a new language,
+
+if you're interested in learning or playing with any or some of the topics below, get in touch with me for a 60 minute trial. the advantage of working 1:1 is that we can set our own schedule, and explore broadly several topics, or go deep into a particular one. we can cater the time to your specific interests.
 
 ### web framework from scratch {{ renderMeterBar("Junior", "Staff") }}
 
@@ -186,31 +209,27 @@ recommended experience levels for each curriculum. keep in mind, these aren't fi
 refactoring exercises and stuff
 video serieses
 web development
-### coding chops: the skills to code anything
-### interview prep (beginner to senior level)
-### low-level computing: x86_64 assembly and c (beginner to staff level)
-### high-level computing: functional programming with haskell (beginner to staff level)
-### learn rust (mid to staff level)
-### computers for kids (beginner to junior level)
+### coding chops: the skills to code anything {{ renderMeterBar("Beginner", "Staff") }}
+### interview prep {{ renderMeterBar("Beginner", "Senior") }}
+### low-level computing: assembly and c {{ renderMeterBar("Beginner", "Staff") }}
+### pure functional programming with haskell {{ renderMeterBar("Beginner", "Staff") }}
+### learn rust {{ renderMeterBar("Mid", "Staff") }}
+### neural networks from scratch {{ renderMeterBar("Junior", "Staff") }}
+### computers for kids {{ renderMeterBar("Beginner", "Junior") }}
 sort of depends on the kid, generally ages 10+ unless they're like super duper already interested in computers
 
 
-## maybes
-
-### neural network from scratch (junior to staff level)
-
-
-## learning resources
-## teaching experience
-## software engineering experience
-
-
-## resources for learning about programming and computers
+## free online coding resources
 
 ### puzzles and games
 #### adults who haven't written a line of code / children under 14
 ##### Opus Magnum
 ![width=200|Opus Magnum](./opusmagnum.gif)
+
+
+## my coding projects
+
+
 
 Hello
 
@@ -246,9 +265,7 @@ who's the audience here?
 
 - also need to talk about the advantages of tutoring, like i'll assess you, and see if i'm able to help you. the advantage of 1on1 is that we're able to make a curriculum really customized to your needs. that being said, i've been doing this for a while and have a bank of exercises to go to: https://github.com/sumeet/Sumcademy
 
-## projects
-
-## professional work experience
+## my resume for software eng &amp; teaching
 
 ### important
 - CV
@@ -436,6 +453,37 @@ for (var i = 0; i < images.length; i++) {
     };
     canvas.parentNode.appendChild(playButton);
   }
+}
+
+var headers = document.querySelectorAll("h2");
+for (const header of headers) {
+  const siblings = getNextSiblings(header);
+  for (const sibling of siblings) {
+    sibling.style.origDisplay = sibling.style.display;
+    sibling.style.display = "none";
+  }
+
+  header.addEventListener("click", function() {
+    const siblings = getNextSiblings(this);
+    for (const sibling of siblings) {
+      if (sibling.style.display === "none") {
+        sibling.style.display = sibling.style.origDisplay;
+      } else {
+        sibling.style.origDisplay = sibling.style.display;
+        sibling.style.display = "none";
+      }
+    }
+  });
+}
+
+function getNextSiblings(elem) {
+  var siblings = [];
+  while (elem = elem.nextElementSibling) {
+    if (elem.tagName === 'H2') break;
+    if (elem.tagName === 'SCRIPT') continue;
+    siblings.push(elem);
+  }
+  return siblings;
 }
 </script>
 </html>
