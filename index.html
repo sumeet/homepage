@@ -37,6 +37,8 @@ body {
   font-size: 1.075em;
 }
 
+
+
 h1, h2, h3 {
   letter-spacing: -0.07em;
   font-family: "Iosevka Aile Semibold";
@@ -50,9 +52,12 @@ h1, h2, h3 {
 }
 
 h2 {
-  text-decoration: underline;
+  user-select: none;
+  /*text-decoration: underline;*/
   cursor: pointer;
   text-decoration-style: wavy;
+  background-color: black;
+  color: white;
 }
 
 h2:active {
@@ -219,7 +224,7 @@ web development
 sort of depends on the kid, generally ages 10+ unless they're like super duper already interested in computers
 
 
-## free online coding resources
+## recommended coding resources
 
 ### puzzles and games
 #### adults who haven't written a line of code / children under 14
@@ -227,7 +232,7 @@ sort of depends on the kid, generally ages 10+ unless they're like super duper a
 ![width=200|Opus Magnum](./opusmagnum.gif)
 
 
-## my coding projects
+## projects i've built
 
 
 
@@ -265,7 +270,7 @@ who's the audience here?
 
 - also need to talk about the advantages of tutoring, like i'll assess you, and see if i'm able to help you. the advantage of 1on1 is that we're able to make a curriculum really customized to your needs. that being said, i've been doing this for a while and have a bank of exercises to go to: https://github.com/sumeet/Sumcademy
 
-## my resume for software eng &amp; teaching
+## professional resume
 
 ### important
 - CV
@@ -340,6 +345,18 @@ who's the audience here?
   - more recent tracker compos
 
 </body>
+
+<script>
+  let bodyStyle = window.getComputedStyle(document.body);
+  let [marginLeft, marginRight] = [
+    bodyStyle.getPropertyValue('margin-left'),
+    bodyStyle.getPropertyValue('margin-right'),
+  ];
+  let styleTag = `<style>h2 { margin-left: -${marginLeft}; margin-right: -${marginRight}; }</style>`;
+  document.head.insertAdjacentHTML('beforeend', styleTag);
+</script>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
