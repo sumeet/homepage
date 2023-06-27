@@ -21,6 +21,10 @@
   font-family: "Iosevka Aile Medium";
   src: url("fonts/Iosevka Aile Medium.ttf");
 }
+@font-face {
+  font-family: "Iosevka Aile Light";
+  src: url("fonts/Iosevka Aile Light.ttf");
+}
 a, a:visited {
   color: black;
   text-decoration: underline;
@@ -73,7 +77,8 @@ h2:active {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  font-family: "Iosevka Aile";
+  font-weight: normal;
+  font-family: "Iosevka Aile Light";
   font-size: 14px; /* Smaller font size for all cells */
 }
 
@@ -200,7 +205,17 @@ function renderMeterBar(startLevel = "Beginner", endLevel = "Staff") {
 }
 </script>
 
+<!-- TODO: add squiggly when open lol -->
 ## get coding help from me
+### computers for kids {{ renderMeterBar("Beginner", "Junior") }}
+### interview prep {{ renderMeterBar("Beginner", "Senior") }}
+### coding chops: learn to code anything {{ renderMeterBar("Beginner", "Staff") }}
+### low-level computing: assembly and c {{ renderMeterBar("Beginner", "Staff") }}
+### pure functional programming with haskell {{ renderMeterBar("Beginner", "Staff") }}
+### web framework from scratch {{ renderMeterBar("Junior", "Staff") }}
+### neural networks from scratch {{ renderMeterBar("Junior", "Staff") }}
+### software design &amp; architecture {{ renderMeterBar("Mid", "Staff") }}
+### learn rust {{ renderMeterBar("Mid", "Staff") }}
 
 computer lessons, tutoring, pair programming buddy, call it whatever you want, bottom line is it's way faster to learn pair programming with someone who's good at explaining things.
 
@@ -208,21 +223,12 @@ if you're trying to learn a new language,
 
 if you're interested in learning or playing with any or some of the topics below, get in touch with me for a 60 minute trial. the advantage of working 1:1 is that we can set our own schedule, and explore broadly several topics, or go deep into a particular one. we can cater the time to your specific interests.
 
-### web framework from scratch {{ renderMeterBar("Junior", "Staff") }}
 
-### software design &amp; architecture {{ renderMeterBar("Mid", "Staff") }}
 refactoring exercises and stuff
 video serieses
 web development
-### coding chops: the skills to code anything {{ renderMeterBar("Beginner", "Staff") }}
-### interview prep {{ renderMeterBar("Beginner", "Senior") }}
-### low-level computing: assembly and c {{ renderMeterBar("Beginner", "Staff") }}
-### pure functional programming with haskell {{ renderMeterBar("Beginner", "Staff") }}
-### learn rust {{ renderMeterBar("Mid", "Staff") }}
-### neural networks from scratch {{ renderMeterBar("Junior", "Staff") }}
-### computers for kids {{ renderMeterBar("Beginner", "Junior") }}
-sort of depends on the kid, generally ages 10+ unless they're like super duper already interested in computers
 
+sort of depends on the kid, generally ages 10+ unless they're like super duper already interested in computers
 
 ## recommended coding resources
 
