@@ -41,8 +41,6 @@ body {
   font-size: 1.075em;
 }
 
-
-
 h1, h2, h3 {
   letter-spacing: -0.07em;
   font-family: "Iosevka Aile Semibold";
@@ -71,7 +69,7 @@ h2:active {
 
 .fa, .fa-brands, .fa-solid {
   display: inline;
-  font-size: 1.25em;
+  /*font-size: 1.25em;*/
 }
 
 .meter {
@@ -148,6 +146,10 @@ h2:active {
 function faBrands(name) {
   return `<i class="fa-brands fa-${name}"></i>`;
 }
+
+function faSolid(name) {
+  return `<i class="fa-solid fa-${name}"></i>`;
+}
 </script>
 
 <body markdown>
@@ -211,6 +213,8 @@ function renderMeterBar(startLevel = "Beginner", endLevel = "Staff") {
 
 get help with new computer concepts through a combination of pair programming and fun assignments. for clarity, i've organized popular material into separate curriculums. though the benefit of working 1:1 is that everything is totally customized to your interests, so we'll mix and match accordingly.
 
+[{{ faSolid("calendar-alt") }} book a quick consultation](https://cal.com/smt222/intro)
+
 ### computers for kids {{ renderMeterBar("Beginner", "Junior") }}
 for ages 9+. introduction to computational thinking, computer proficiency and having fun on the computer
 ### job interview prep {{ renderMeterBar("Beginner", "Senior") }}
@@ -260,17 +264,32 @@ rust is also modern, and approachable to anyone who's already learned another pr
 
 <!--sort of depends on the kid, generally ages 10+ unless they're like super duper already interested in computers-->
 
-## recommended coding resources
+## recommended learning resources
 
-### puzzles and games
-#### adults who haven't written a line of code / children under 14
-##### Opus Magnum
+<!--### puzzles and games-->
+<!--#### adults who haven't written a line of code / children under 14-->
+### [Opus Magnum](https://www.zachtronics.com/opus-magnum/)
 ![width=200|Opus Magnum](./opusmagnum.gif)
+
+great for learning programmatic thinking, playable by total beginners to coding
+
+### [TIS-100](https://www.zachtronics.com/tis-100/) [Shenzhen I/O](https://www.zachtronics.com/shenzhen-io/) [EXAPUNKS](https://www.zachtronics.com/exapunks/)
+
+![height=100|TIS-100](./tis-100.gif) ![height=100|Shenzen I/O](./shenzen.gif) ![height=100|EXAPUNKS](./exapunks.gif)
+
+the most gentle introduction to assembly language possible, targeted at both programmers and non-programmers. TIS-100 is about finding a really old computer that your uncle left behind, Shenzhen I/O is about moving to China and becoming a hardware engineer, EXAPUNKS is about being a leet hax0r in the 90s.
+
+### [Tsoding](https://www.youtube.com/@TsodingDaily)
+the best coding teacher there is right now. tsoding's unique conversational teaching style is engaging and fun, and he codes various projects in different programming languages. the motto is recreational programming, which means coding for fun
+
+### [Destroy All Software](https://www.destroyallsoftware.com)
+a video series shot in the early 2010s, which is still an amazing introduction to advanced concepts for webdevs, including object-oriented design, TDD, Unix and Vim. the screencasts mostly use Ruby, though the concepts are transferable to any language.
+
+### [Clean Coder: Fundamentals](https://cleancoders.com/series/clean-code/fundamentals)
+short video series about organizing functions, variables, classes and refactoring. i highly recommend the first 7 episodes
 
 
 ## projects i've built
-
-
 
 Hello
 
@@ -281,7 +300,7 @@ I work with software engineers looking to improve their skills:
   - 20 minute consultation
   - free 90 minute session
 
-[book a free 20 minute consultation <i class="fa-solid fa-calendar-alt"></i>](https://calendly.com/smta/20-minutes)
+[book a free 20 minute consultation (https://calendly.com/smta/20-minutes)
 
 who's the audience here?
 - working software professionals
@@ -447,65 +466,62 @@ while (changed) {
 
 function seppukuIntoDiv(el) {
   const div = document.createElement('div');
-  img.parentNode.insertBefore(div, el);
+  el.parentNode.insertBefore(div, el);
   div.appendChild(el);
+  div.style.display = 'inline-block';
   return div;
 }
 
 // disables autoplay for gifs, makes it so you have to click them
 // TODO:
 // - make some indicator this is a clickable gif -- could probably use fontawesome for this
-var images = document.getElementsByTagName('img');
-for (var i = 0; i < images.length; i++) {
-  var img = images[i];
+var images = Array.from(document.getElementsByTagName('img'));
+for (const img of images) {
+  if (!img.src.toLowerCase().endsWith('.gif')) continue;
   const div = seppukuIntoDiv(img);
   div.style.position = 'relative';
 
-  if (img.src.endsWith('.gif')) {
-    const specifiedHeight = img.height;
+  const specifiedHeight = img.height;
+  const specifiedWidth = img.width;
+  const canvas = document.createElement('canvas');
+  canvas.style.cursor = 'pointer';
+  const ctx = canvas.getContext('2d');
+  img.style.cursor = 'pointer';
+  img.onload = function () {
+    // TODO: calc for the other way around too, height specified but not width
+    if (specifiedHeight === 0) {
+      this.height = (this.naturalHeight / this.naturalWidth) * this.width;
+    } else if (specifiedWidth=== 0) {
+      this.width = (this.naturalWidth / this.naturalHeight) * this.height;
+    }
 
-    var canvas = document.createElement('canvas');
-    canvas.style.cursor = 'pointer';
-    var ctx = canvas.getContext('2d');
-    img.style.cursor = 'pointer';
-    img.onload = function () {
-      // TODO: calc for the other way around too, height specified but not width
-      if (specifiedHeight === 0) {
-        this.height = (this.naturalHeight / this.naturalWidth) * this.width;
-      }
-
-      canvas.width = this.naturalWidth;
-      canvas.height = this.naturalHeight;
-      div.style.width = this.width + 'px';
-      div.style.height = this.height + 'px';
-      canvas.style.width = this.width + 'px';  // reset the canvas CSS width/height
-      canvas.style.height = this.height + 'px'; // to avoid stretching
-      ctx.drawImage(this, 0, 0, this.naturalWidth, this.naturalHeight);
-    };
-
-    const playButton = document.createElement('i');
-    playButton.className = 'fa-solid fa-play';
-    playButton.style.position = 'absolute';
-    playButton.style.top = '50%';
-    playButton.style.left = '50%';
-    playButton.style.transform = 'translate(-50%, -50%)';
-    playButton.style.fontSize = '2em';
-    playButton.style.color = 'rgba(255, 255, 255, 0.7)';
-    playButton.style.pointerEvents = 'none';
-
-    img.onclick = function () {
-      img.parentNode.replaceChild(canvas, img);
-      playButton.style.display = 'block';
-    };
-
-    img.onclick();
-
-    canvas.onclick = function () {
-      canvas.parentNode.replaceChild(img, canvas);
-      playButton.style.display = 'none';
-    };
-    canvas.parentNode.appendChild(playButton);
-  }
+    canvas.width = this.naturalWidth;
+    canvas.height = this.naturalHeight;
+    div.style.width = this.width + 'px';
+    div.style.height = this.height + 'px';
+    canvas.style.width = this.width + 'px';  // reset the canvas CSS width/height
+    canvas.style.height = this.height + 'px'; // to avoid stretching
+    ctx.drawImage(this, 0, 0, this.naturalWidth, this.naturalHeight);
+  };
+  const playButton = document.createElement('i');
+  playButton.className = 'fa-solid fa-play';
+  playButton.style.position = 'absolute';
+  playButton.style.top = '50%';
+  playButton.style.left = '50%';
+  playButton.style.transform = 'translate(-50%, -50%)';
+  playButton.style.fontSize = '2em';
+  playButton.style.color = 'rgba(255, 255, 255, 0.7)';
+  playButton.style.pointerEvents = 'none';
+  img.onclick = function () {
+    img.parentNode.replaceChild(canvas, img);
+    playButton.style.display = 'block';
+  };
+  img.onclick();
+  canvas.onclick = function () {
+    canvas.parentNode.replaceChild(img, canvas);
+    playButton.style.display = 'none';
+  };
+  canvas.parentNode.appendChild(playButton);
 }
 
 var headers = document.querySelectorAll("h2");
@@ -538,5 +554,10 @@ function getNextSiblings(elem) {
   }
   return siblings;
 }
+
+// open external links in new tab
+Array.from(document.links)
+        .filter(link => link.hostname != window.location.hostname)
+        .forEach(link => link.target = '_blank');
 </script>
 </html>
