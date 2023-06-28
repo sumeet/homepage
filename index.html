@@ -159,6 +159,9 @@ maybe CSS up a logo like this
 https://web.archive.org/web/20120301010917/http://www.sumeet.me/
 -->
 # sumeet
+
+sumeet.a@gmail.com
+
 @nop
 [{{ faBrands("twitch") }}](https://twitch.tv/sumcademy "twitch.tv/sumcademy")
 [{{ faBrands("discord") }}](https://discord.com/users/smt "username smt on discord")
@@ -213,56 +216,51 @@ function renderMeterBar(startLevel = "Beginner", endLevel = "Staff") {
 
 get help with new computer concepts through a combination of pair programming and fun assignments. for clarity, i've organized popular material into separate curriculums. though the benefit of working 1:1 is that everything is totally customized to your interests, so we'll mix and match accordingly.
 
-[{{ faSolid("calendar-alt") }} book a quick consultation](https://cal.com/smt222/intro)
+rate is on a sliding scale depending on your experience level. one session is 90 minutes. usually you get one free session just so i can make sure i'm able to really help you.
 
-### computers for kids {{ renderMeterBar("Beginner", "Junior") }}
-for ages 9+. introduction to computational thinking, computer proficiency and having fun on the computer
-### job interview prep {{ renderMeterBar("Beginner", "Senior") }}
+when you work with me, you're able to check in with me over instant messaging in the middle of the week. if you get stuck, a whole week is too long to wait, so it's better you message me right away. you will also get access to xerox copies of the learning materials below
+
+[{{ faSolid("calendar-alt") }} book a free consultation](https://cal.com/smt222/intro) or [{{ faSolid("mailbox") }} email me](mailto:sumeet.a@gmail.com?subject=pair+programming) or msg [{{ faBrands("discord") }} @smt](https://discord.com/username/smt) on discord
+
+### {{ faSolid("brain") }} computers for kids {{ renderMeterBar("Beginner", "Junior") }}
+
+for ages 9+. introduction to computational thinking, computer proficiency and having fun on the computer. or advanced topics for children who are already advanced
+
+### {{ faSolid("road") }} job interview prep {{ renderMeterBar("Beginner", "Senior") }}
+
 how to prepare for software engineering job interviews. help with your resume, and what to study to become a presentable engineer
-### coding chops: learn to code anything {{ renderMeterBar("Beginner", "Staff") }}
+### {{ faSolid("steak") }} coding chops: learn to code anything {{ renderMeterBar("Beginner", "Staff") }}
 raw coding is coding stripped of unrelated complexity like external systems and APIs, and allows us to focus on fundamentals: if statements, variables and structure
 
 [advent of code](https://adventofcode.com) challenges exercise various aspects of raw coding, compared to leetcode which focuses on classical algorithms. after raw coding, you won't **need** to grind competitive programming since you'll already be a great coder
 
-### low-level computing: assembly and c {{ renderMeterBar("Beginner", "Staff") }}
+### {{ faSolid("microchip") }} low-level computing: assembly and c {{ renderMeterBar("Beginner", "Staff") }}
 asm is the underpinning of all programming languages, and learning it removes all the mystery, the fog of war that was there in terms of how software really works. you understand how every programming language under the hood, and the differences between them matter less.
 
 it's never too early or too late to get into assembly. in many ways, assembly code is simpler than high-level code since there are fewer concepts at the core layer. an assembly language curriculum for a beginner will be basic programming, whereas for someone advanced will be much more involved, mapping what they already know about computers onto the low-level.
 
-### pure functional programming with haskell {{ renderMeterBar("Beginner", "Staff") }}
+### {{ faSolid("lambda") }} pure functional programming with haskell {{ renderMeterBar("Beginner", "Staff") }}
 it's also never too early or too late to get into haskell. pure functional programming is a different paradigm, and haskell is the only programming language that actually forces you to stay within the functional paradigm.
 
 at first your head will spin as you figure out how to restructure imperative code you already know how to write. it will feel like relearning coding from the beginning. and then you'll internalize the [Church-Turing Equivalence](https://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis) into your concept of coding and computation
 
-### web framework from scratch {{ renderMeterBar("Junior", "Staff") }}
+### {{ faSolid("cogs") }} web framework from scratch {{ renderMeterBar("Junior", "Staff") }}
 i'm not going to say don't use a web framework, that would be crazy. i will argue though that understanding how the web, http, and the frameworks you use work, and having the skills to make one yourself will greatly increase your abilities to build and debug code.
 
 on many software teams, there's one lead engineer who understands this stuff, while the rest are at the framework level, treating it like a black box. the more you know, the more you can do
 
-### neural networks from scratch {{ renderMeterBar("Junior", "Staff") }}
+### {{ faSolid("atom") }} neural networks from scratch {{ renderMeterBar("Junior", "Staff") }}
 a short and simple introduction to building and training neural networks, and backpropagation. you'll be coding a neural net from scratch using arrays and for loops, using the programming language you're already comfortable with
 
-### software design &amp; architecture {{ renderMeterBar("Mid", "Staff") }}
+### {{ faSolid("balance-scale") }} software design &amp; architecture {{ renderMeterBar("Mid", "Staff") }}
 the art of writing good code, and keep writing good code as your program grows to thousands of lines.
 
 software engineers need to balance functionality, readability, performance and flexibility. learn refactoring techniques, and finally be confident in being able to structure good code.
 
-### learn rust {{ renderMeterBar("Mid", "Staff") }}
+### {{ faBrands("rust") }} learn rust {{ renderMeterBar("Mid", "Staff") }}
 rust is one of the most interesting mainstream languages to emerge in the past several years. it combines low-level programming with functional programming, and the borrow checker makes it different from every other language.
 
 rust is also modern, and approachable to anyone who's already learned another programming language, and serves as a gateway to learning about more computer concepts
-<!--computer lessons, tutoring, pair programming buddy, call it whatever you want, bottom line is it's way faster to learn pair programming with someone who's good at explaining things.-->
-
-<!--if you're trying to learn a new language,-->
-
-<!--if you're interested in learning or playing with any or some of the topics below, get in touch with me for a 60 minute trial. the advantage of working 1:1 is that we can set our own schedule, and explore broadly several topics, or go deep into a particular one. we can cater the time to your specific interests.-->
-
-
-<!--refactoring exercises and stuff-->
-<!--video serieses-->
-<!--web development-->
-
-<!--sort of depends on the kid, generally ages 10+ unless they're like super duper already interested in computers-->
 
 ## recommended learning resources
 
@@ -450,7 +448,7 @@ renderer.image = function(href, title, text) {
 marked.setOptions({renderer: renderer, mangle: false, headerIds: false});
 
 function evalInlineCode(text) {
-  return text.replace(/[{][{]\s*(.+)\s*[}][}]/g, (_, p1) => eval(p1));
+  return text.replace(/[{][{]\s*(.+?)\s*[}][}]/g, (_, p1) => eval(p1));
 }
 
 
@@ -559,5 +557,19 @@ function getNextSiblings(elem) {
 Array.from(document.links)
         .filter(link => link.hostname != window.location.hostname)
         .forEach(link => link.target = '_blank');
+
+// fix space between icon and text getting underlined issue
+for (const icon of document.querySelectorAll('a > i')) {
+  var textNode = icon.nextSibling;
+  if(textNode && textNode.nodeType === 3) { // Check if next sibling is a text node
+    var text = textNode.nodeValue;
+    if(text.charAt(0) === ' ') { // Check if the first character is a space
+      textNode.nodeValue = text.slice(1); // Remove the first character (the space)
+      icon.style.marginRight = '0.5em'; // Add some space after the icon
+      icon.style.display = 'inline-block';
+    }
+  }
+}
+
 </script>
 </html>
