@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="fa/css/fontawesome.css">
   <link rel="stylesheet" href="fa/css/brands.css">
   <link rel="stylesheet" href="fa/css/solid.css">
+  <link rel="stylesheet" href="fa/css/duotone.css">
 </head>
 
 <style type="text/css">
@@ -86,7 +87,7 @@ h1 {
 }
 
 h2 + * {
-  margin-top: 0;
+  margin-top: 0.75em;
 }
 
 /*h3 {*/
@@ -304,20 +305,20 @@ Sessions are 90 minutes, which is a good amount of time to get into a deep codin
 }
 </style>
 <script>
-function ctaButton( buttonText, url) {
+function ctaButton(buttonText, url, bgColor = "black") {
   return `<div class="cta-button">
-    <a href="${url}">${buttonText}</a>
+    <a href="${url}" style="background-color: ${bgColor};">${buttonText}</a>
   </div>`;
 }
 </script>
 
 {{ ctaButton(`${faSolid("calendar-alt")} Book A Free Consultation`, "https://blah.com") }}
 {{ ctaButton(`${faSolid("mailbox")} Email Me`, "mailto:sumeeta.@gmail.com?subject=Pair+Programming") }}
-{{ ctaButton(`${faBrands("discord")} DM @smt on Discord`, "https://discord.com/username/smt") }}
+{{ ctaButton(`${faBrands("discord")} DM @smt on Discord`, "https://discord.com/username/smt", "#5764F2") }}
 
 <!--[{{ faSolid("calendar-alt") }} Book A Free Consultation](https://cal.com/smt222/intro) or [{{ faSolid("mailbox") }} Email Me](mailto:sumeet.a@gmail.com?subject=pair+programming) or [{{ faBrands("discord") }} DM @smt on Discord](https://discord.com/username/smt)-->
 
-### {{ faSolid("brain") }} Coding For Kids: How To Have Fun On The Computer {{ renderMeterBar("Beginner", "Junior") }}
+### {{ faSolid("head-side-brain") }} Coding For Kids: How To Have Fun On The Computer {{ renderMeterBar("Beginner", "Junior") }}
 
 <!--Ages 9+. Introduction to computational thinking, computer proficiency and having fun on the computer. Advanced topics for children who are already advanced.-->
 
