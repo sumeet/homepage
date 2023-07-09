@@ -43,21 +43,16 @@
 }
 
 a, a:visited {
-  color: inherit;
+  color: black;
   text-decoration: underline;
   text-decoration-style: dashed;
 }
 a:hover {
-  /*color: black;*/
+  color: black;
   text-decoration-style: wavy;
-}
-a:active {
-  text-decoration-style: dotted;
 }
 
 body {
-  /*background-color: #F0F8FF;*/
-  background-color: #F8F8FF;
   letter-spacing: -0.04em;
   font-family: "Iosevka Aile";
   font-size: 1.13em;
@@ -91,18 +86,16 @@ h1 {
   font-weight: normal;
 }
 
-h2 + *, h3 + * {
-  margin-top: 0.70em;
+h2 + * {
+  margin-top: 0.75em;
 }
 
-h3 {
-  background-color: #C5C6D0;
-  color: #353839;
-  letter-spacing: 0.005em;
-  padding-left: 0.25em;
-  border-top: 2px groove #F8F8FF;
-  border-bottom: 2px groove #F8F8FF;
-}
+/*h3 {*/
+/*  background-color: black;*/
+/*  color: white;*/
+/*  letter-spacing: -0.07em;*/
+/*  padding-left: 0.25em;*/
+/*}*/
 
 /*h3 a, h3 a:visited {*/
 /*  color: white;*/
@@ -139,7 +132,7 @@ h2:active {
   justify-content: flex-start;
   align-items: center;
   font-weight: normal;
-  font-family: "Iosevka Aile";
+  font-family: "Iosevka Aile Light";
   font-size: 14px; /* Smaller font size for all cells */
 }
 
@@ -182,43 +175,35 @@ h2:active {
 }
 
 .meter-segment.beginner {
-  background: #DDEFF9;
+  background: #F5F5F5;
 }
 
 .meter-segment.junior {
-  background: #AEDFF7;
+  background: #D5D5D5;
 }
 
 .meter-segment.mid {
-  background: #73C2FB;
+  background: #B5B5B5;
 }
 
 .meter-segment.senior {
-  background: #6495ED;
+  background: #959595;
 }
 
 .meter-segment.staff {
-  background: #4169E1;
+  background: #858585;
   text-shadow: none;
 }
 
 </style>
 
 <script>
-  function faBrands(name, color = null) {
-    let style = "";
-    if (color) {
-      style = `style="color: ${color};"`;
-    }
-    return `<i ${style} class="fa-brands fa-${name}"></i>`;
-  }
+function faBrands(name) {
+  return `<i class="fa-brands fa-${name}"></i>`;
+}
 
-function faSolid(name, color = null) {
-  let style = "";
-  if (color) {
-      style = `style="color: ${color};"`;
-  }
-  return `<i ${style} class="fa-solid fa-${name}"></i>`;
+function faSolid(name) {
+  return `<i class="fa-solid fa-${name}"></i>`;
 }
 </script>
 
@@ -244,10 +229,10 @@ function lite(text) {
 <div style="font-size: 1.2em; text-align: left; margin-left: 0.25em;">
 
 @nop
-[{{ faBrands("twitch", "#603F9D") }}](https://twitch.tv/sumcademy "twitch.tv/sumcademy")
-[{{ faBrands("discord", "#5764F2") }}](https://discord.com/users/smt "username smt on discord")
-[{{ faBrands("github", "#1B1E22") }}](https://github.com/sumeet "github.com/sumeet")
-[{{ faBrands("linkedin", "#016292") }}](https://www.linkedin.com/in/sumeet-agarwal-01b660a "linkedin")
+[{{ faBrands("twitch") }}](https://twitch.tv/sumcademy "twitch.tv/sumcademy")
+[{{ faBrands("discord") }}](https://discord.com/users/smt "username smt on discord")
+[{{ faBrands("github") }}](https://github.com/sumeet "github.com/sumeet")
+[{{ faBrands("linkedin") }}](https://www.linkedin.com/in/sumeet-agarwal-01b660a "linkedin")
 </div>
 
 </div>
@@ -308,17 +293,12 @@ function renderMeterBar(startLevel, endLevel) {
 Sessions are 90 minutes, which is a good amount of time to get into a deep coding session. If you want to meet on a weekly basis, I'll give you assignments which we can chat about during the week.
 
 <style type="text/css">
-.cta {
-  margin-top: 1.25em;
-  margin-bottom: 1.25em;
-}
 .cta-button {
   display: inline-block;
-  /*margin: 10px;*/
 }
 .cta-button a {
   background-color: black;
-  padding: 0.20em 0.4em;
+  padding: 0.25em 0.4em;
   border-radius: 10px;
   color: white;
   text-decoration: none;
@@ -332,11 +312,9 @@ function ctaButton(buttonText, url, bgColor = "black") {
 }
 </script>
 
-<div class="cta">
 {{ ctaButton(`${faSolid("calendar-alt")} Book A Free Consultation`, "https://blah.com") }}
 {{ ctaButton(`${faSolid("mailbox")} Email Me`, "mailto:sumeeta.@gmail.com?subject=Pair+Programming") }}
 {{ ctaButton(`${faBrands("discord")} DM @smt on Discord`, "https://discord.com/username/smt", "#5764F2") }}
-</div>
 
 <!--[{{ faSolid("calendar-alt") }} Book A Free Consultation](https://cal.com/smt222/intro) or [{{ faSolid("mailbox") }} Email Me](mailto:sumeet.a@gmail.com?subject=pair+programming) or [{{ faBrands("discord") }} DM @smt on Discord](https://discord.com/username/smt)-->
 
@@ -548,8 +526,7 @@ Worked on the in-house IT team of a 2000+ employee IT consulting firm based all 
     bodyStyle.getPropertyValue('margin-left'),
     bodyStyle.getPropertyValue('margin-right'),
   ];
-  let styleTag = `<style>h2, h3 { margin-left: -${marginLeft}; margin-right: -${marginRight}; }</style>`;
-  // let styleTag = `<style>h2 { margin-left: -${marginLeft}; margin-right: -${marginRight}; }</style>`;
+  let styleTag = `<style>h2 { margin-left: -${marginLeft}; margin-right: -${marginRight}; }</style>`;
   document.head.insertAdjacentHTML('beforeend', styleTag);
 </script>
 
