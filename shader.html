@@ -12,8 +12,10 @@
 
 <script>
 const canvas = document.getElementById('smoothcanvas');
-const WIDTH = canvas.width;
-const HEIGHT = canvas.height;
+const WIDTH = Math.floor(canvas.clientWidth / 8);
+const HEIGHT = Math.floor(canvas.clientHeight / 8);
+
+
 
 function randomGrid() {
     const grid = [];
@@ -28,13 +30,13 @@ function randomGrid() {
 
 const GRID = randomGrid();
 const GRID_DIFF = randomGrid();
-const RA = 11;
+const RA = 21;
 const ALPHA_N = 0.028;
 const ALPHA_M = 0.147;
-const B1 = 0.278;
-const B2 = 0.365;
-const D1 = 0.267;
-const D2 = 0.445;
+const B1 = 0.257;
+const B2 = 0.336;
+const D1 = 0.365;
+const D2 = 0.549;
 const DT = 0.05;
 
 
@@ -118,14 +120,17 @@ function applyGridDiff() {
     }
 }
 
+function keepDisplayingGrid() {
+    displayGrid();
+    requestAnimationFrame(keepDisplayingGrid);
+}
+keepDisplayingGrid();
+
 function update() {
     computeGridDiff();
     applyGridDiff();
-    displayGrid();
-    requestAnimationFrame(update);
+    setTimeout(update, 0);
 }
-
-displayGrid();
 update();
 
 </script>
