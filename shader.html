@@ -5,7 +5,50 @@
 
 <script>
 var canvas = document.getElementById("myCanvas");
+canvas.width = canvas.width * window.devicePixelRatio;
+canvas.height = canvas.height * window.devicePixelRatio;
+canvas.style.width = `${canvas.width / window.devicePixelRatio}px`;
+canvas.style.height = `${canvas.width / window.devicePixelRatio}px`;
+
 var gl = canvas.getContext("webgl");
+
+function initPositionBuffer() {
+  // Create a buffer for the square's positions.
+  const positionBuffer = gl.createBuffer();
+
+  // Select the positionBuffer as the one to apply buffer
+  // operations to from here out.
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+
+  // Now create an array of positions for the square.
+  const positions = [1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0, -1.0];
+
+  // Now pass the list of positions into WebGL to build the
+  // shape. We do this by creating a Float32Array from the
+  // JavaScript array, then use it to fill the current buffer.
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+
+  return positionBuffer;
+}
+
+function setPositionAttribute(posBuffer, vertexPosition) {
+  const numComponents = 2; // pull out 2 values per iteration
+  const type = gl.FLOAT; // the data in the buffer is 32bit floats
+  const normalize = false; // don't normalize
+  const stride = 0; // how many bytes to get from one set of values to the next
+  // 0 = use type and numComponents above
+  const offset = 0; // how many bytes inside the buffer to start from
+  gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
+  gl.vertexAttribPointer(
+    vertexPosition,
+    numComponents,
+    type,
+    normalize,
+    stride,
+    offset,
+  );
+  gl.enableVertexAttribArray(vertexPosition);
+}
 
     // setup GLSL program
 var vertexShaderSource = `
@@ -128,6 +171,7 @@ vec2 convolve(vec2 uv) {
     return result;
 }
 
+
 void main()
 {
     vec2 fragCoord = gl_FragCoord.xy;
@@ -215,12 +259,56 @@ var programImage = createProgram(gl, vertexShaderSource, fragmentShaderSourceIma
 
 // setup buffers and uniforms
 // create a texture
+
+//////////////////////
+  ///// Texture to render into
+//////////////////////
 var texture = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_2D, texture);
-gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 512, 512, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+
+gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, canvas.width, canvas.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+//////////////////////
+///// TEXTURE1
+//////////////////////
+var iChannel1Texture = gl.createTexture();
+gl.activeTexture(gl.TEXTURE1);
+gl.bindTexture(gl.TEXTURE_2D, iChannel1Texture);
+
+const arr = [];
+for (let i = 0; i < canvas.width*canvas.height; i++) {
+   arr.push(Math.floor(Math.random() * 255));
+   arr.push(Math.floor(Math.random() * 255));
+   arr.push(Math.floor(Math.random() * 255));
+   arr.push(255);
+}
+const pixels = new Uint8Array(arr);
+gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, canvas.width, canvas.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+//////////////////////
+///// TEXTURE0
+//////////////////////
+var iChannel0Texture = gl.createTexture();
+gl.activeTexture(gl.TEXTURE0);
+gl.bindTexture(gl.TEXTURE_2D, iChannel0Texture);
+
+gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, canvas.width, canvas.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+/////////////////////
+// end texture init
+/////////////////////
+const posBuffer = initPositionBuffer();
+let attribLoc = gl.getAttribLocation(programImage, 'position');
+setPositionAttribute(posBuffer, attribLoc);
 
 // create a framebuffer
 var framebuffer = gl.createFramebuffer();
@@ -234,14 +322,41 @@ if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) != gl.FRAMEBUFFER_COMPLETE) {
 
 let frame = 0;
 
+var mouseX = 0;
+var mouseY = 0;
+var mouseClickLeft = 0;
+document.addEventListener('mousemove', function(event) {
+  var rect = canvas.getBoundingClientRect();
+                       console.log('rect.width', rect.width, 'canvas.width', canvas.width);
+                       console.log('rect.height', rect.height, 'canvas.height', canvas.height);
+  mouseX = (event.clientX - rect.left) / rect.width * canvas.width;
+  //mouseY = -(event.clientY - (rect.bottom));
+  //mouseY = rect.bottom - event.clientY;
+  mouseY = (rect.bottom - event.clientY) / rect.height * canvas.height;
+});
+document.addEventListener('mousedown', function(event) {
+   mouseClickLeft = 1;
+});
+document.addEventListener('mouseup', function(event) {
+   mouseClickLeft = 0;
+});
+
+
+
 // rendering loop
 function render(time) {
     // bind the framebuffer and use the program for the first pass
+    gl.activeTexture(gl.TEXTURE0);
     gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
     gl.useProgram(programBufferA);
-    gl.bindTexture(gl.TEXTURE_2D, null);
+    gl.bindTexture(gl.TEXTURE_2D, iChannel0Texture);
 
     // set uniforms here for fragmentShaderSourceBufferA
+    let iMouseLocation = gl.getUniformLocation(programBufferA, "iMouse");
+    
+    console.log('mouseX', mouseX, 'mouseY', mouseY);
+    gl.uniform4f(iMouseLocation, mouseX, mouseY, mouseClickLeft, 0);
+
     let iChannel0Location = gl.getUniformLocation(programBufferA, "iChannel0");
     gl.uniform1i(iChannel0Location, 0);
     let iChannel1Location = gl.getUniformLocation(programBufferA, "iChannel1");
@@ -249,14 +364,16 @@ function render(time) {
     let iChannel2Location = gl.getUniformLocation(programBufferA, "iChannel2");
     gl.uniform1i(iChannel2Location, 2);
     let iResolutionLocation = gl.getUniformLocation(programBufferA, "iResolution");
+    const canvas_bounds = canvas.getBoundingClientRect();
     gl.uniform2f(iResolutionLocation, canvas.width, canvas.height);
     let iFrameLocation = gl.getUniformLocation(programBufferA, "iFrame");
     gl.uniform1i(iFrameLocation, frame++);
 
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
     // use the program for the second pass
     // Unbind the framebuffer before the second pass
+    gl.copyTexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 0, 0, canvas.width, canvas.height, 0);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.useProgram(programImage);
 
@@ -274,7 +391,7 @@ function render(time) {
     iResolutionLocation = gl.getUniformLocation(programImage, "iResolution");
     gl.uniform2f(iResolutionLocation, canvas.width, canvas.height);
 
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
     // Unbind the framebuffer after rendering
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -309,145 +426,5 @@ function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
 }
 </script>
 
-</body>
-</html>
-||||||| 6b372f8
-=======
-<!DOCTYPE html>
-<html>
-<head>
-    <title>SmoothLife</title>
-    <style>
-        body { margin: 0; overflow: hidden; }
-        canvas { width: 100vh; height: 100vh; display:block; }
-    </style>
-</head>
-<body>
-<canvas id="smoothcanvas"></canvas>
-
-<script>
-const canvas = document.getElementById('smoothcanvas');
-const WIDTH = Math.floor(canvas.clientWidth / 8);
-const HEIGHT = Math.floor(canvas.clientHeight / 8);
-
-
-
-function randomGrid() {
-    const grid = [];
-    for (let i = 0; i < HEIGHT; i++) {
-        grid[i] = [];
-        for (let j = 0; j < WIDTH; j++) {
-            grid[i][j] = Math.random();
-        }
-    }
-    return grid;
-}
-
-const GRID = randomGrid();
-const GRID_DIFF = randomGrid();
-const RA = 21;
-const ALPHA_N = 0.028;
-const ALPHA_M = 0.147;
-const B1 = 0.257;
-const B2 = 0.336;
-const D1 = 0.365;
-const D2 = 0.549;
-const DT = 0.05;
-
-
-
-const context = canvas.getContext('2d');
-
-function displayGrid() {
-    const imageData = context.createImageData(WIDTH, HEIGHT);
-    for (let i = 0; i < HEIGHT; i++) {
-        for (let j = 0; j < WIDTH; j++) {
-            const index = (i * WIDTH + j) * 4;
-            const value = GRID[i][j];
-            imageData.data[index + 0] = value * 255;
-            imageData.data[index + 1] = value * 255;
-            imageData.data[index + 2] = value * 255;
-            imageData.data[index + 3] = 255;
-        }
-    }
-    context.putImageData(imageData, 0, 0);
-}
-
-function emod(a, b) {
-    return (a%b + b)%b;
-}
-
-function sigma(x, a, alpha) {
-    return 1.0/(1.0 + Math.exp(-(x - a)*4/alpha));
-}
-
-function sigma_n(x, a, b) {
-    return sigma(x, a, ALPHA_N)*(1 - sigma(x, b, ALPHA_N));
-}
-
-function sigma_m(x, y, m) {
-    return x*(1 - sigma(m, 0.5, ALPHA_M)) + y*sigma(m, 0.5, ALPHA_M);
-}
-
-function s(n, m) {
-    return sigma_n(n, sigma_m(B1, D1, m), sigma_m(B2, D2, m));
-}
-
-function computeGridDiff() {
-    for (let cy = 0; cy < HEIGHT; ++cy) {
-        for (let cx = 0; cx < WIDTH; ++cx) {
-            let m = 0;
-            let M = 0;
-            let n = 0;
-            let N = 0;
-            const ri = RA/3;
-
-            for (let dy = -(RA - 1); dy <= (RA - 1); ++dy) {
-                for (let dx = -(RA - 1); dx <= (RA - 1); ++dx) {
-                    let x = emod(cx + dx, WIDTH);
-                    let y = emod(cy + dy, HEIGHT);
-                    if (dx*dx + dy*dy <= ri*ri) {
-                        m += GRID[y][x];
-                        M += 1;
-                    } else if (dx*dx + dy*dy <= RA*RA) {
-                        n += GRID[y][x];
-                        N += 1;
-                    }
-                }
-            }
-            m /= M;
-            n /= N;
-            const q = s(n, m);
-            GRID_DIFF[cy][cx] = 2*q - 1;
-        }
-    }
-}
-
-function clamp(x, min, max) {
-    return Math.min(Math.max(x, min), max);
-}
-
-function applyGridDiff() {
-    for (let i = 0; i < HEIGHT; ++i) {
-        for (let j = 0; j < WIDTH; ++j) {
-            GRID[i][j] = clamp(GRID[i][j] + GRID_DIFF[i][j]*DT, 0, 1);
-        }
-    }
-}
-
-function keepDisplayingGrid() {
-    displayGrid();
-    requestAnimationFrame(keepDisplayingGrid);
-}
-keepDisplayingGrid();
-
-function update() {
-    computeGridDiff();
-    applyGridDiff();
-    setTimeout(update, 0);
-}
-update();
-
-</script>
 </body>
 </html>
