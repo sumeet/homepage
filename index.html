@@ -242,6 +242,8 @@ function lite(text) {
 
 # <span>**s**{{ lite("u") }}**m**{{lite("ee")}}**t**</span>
 
+<!-- <canvas id="smoothlife"></canvas> -->
+
 <div style="font-size: 1.2em; text-align: left; margin-left: 0.25em;">
 
 @nop
@@ -717,4 +719,26 @@ for (const icon of document.querySelectorAll('a > i')) {
 }
 
 </script>
+
+<script>
+  let uNodes = document.evaluate("//span[text()='u']", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+  const uSpan = uNodes.snapshotItem(0);
+  const rect = uSpan.getBoundingClientRect();
+  const newCanvas = document.createElement("canvas");
+  newCanvas.style.position = "absolute";
+  newCanvas.style.zIndex = "-1";
+  newCanvas.width = rect.width;
+  newCanvas.height = rect.height * 0.6;
+  const offsetX = rect.left + window.pageXOffset;
+  const offsetY = rect.top + window.pageYOffset;
+  newCanvas.style.left = `${offsetX}px`;
+  newCanvas.style.top = `${offsetY * 2.2}px`;
+  newCanvas.id = "smoothlife";
+
+  document.body.appendChild(newCanvas);
+</script>
+
+
+<script src="./smoothlife.js"></script>
+
 </html>
